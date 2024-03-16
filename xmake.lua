@@ -8,3 +8,4 @@ target("Tetris")
 
     add_includedirs("include")
     add_files("src/*.cpp")
+

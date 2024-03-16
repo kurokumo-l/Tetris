@@ -1,9 +1,6 @@
 #include "Terminal.h"
 #include <iostream>
 
-
-constexpr std::string CSI = "\e[";
-
 void TerminalControl::MoveTo(int row, int col)
 {
     std::cout << CSI << std::format("{};{}H", row, col);
