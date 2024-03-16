@@ -8,7 +8,7 @@ int Draw::ColCast(int col)
     return col * 2 - 1;
 }
 
-void Draw::Window(int top, int left, int width, int height, std::string title)
+void Draw::Window(int top, int left, int width, int height, const std::string &title)
 {
     // 第一行
     TerminalControl::MoveTo(top, ColCast(left));

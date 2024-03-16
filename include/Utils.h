@@ -4,6 +4,7 @@
 namespace Utils
 {
 int FPS();
+bool IsKeyDown(int vKey);
 } // namespace Utils
 
 #endif

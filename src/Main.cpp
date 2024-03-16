@@ -1,6 +1,8 @@
+#include "Control.h"
 #include "Draw.h"
+#include "Game.h"
 #include "Terminal.h"
-#include "utils.h"
+#include "Utils.h"
 #include <format>
 #include <iostream>
 #include <thread>
@@ -26,16 +28,21 @@ void Init()
     Draw::Window(1, 22, 8, 18, "Next");
     // 信息面板
     Draw::Window(19, 22, 8, 4, "Info");
+
+    Game::Init();
 }
 
 void Loop()
 {
-    int x = 10;
-    int y = 5;
-    while (true)
+    int x = 15;
+    int y = 18;
+    while (Game::IsRunning)
     {
-        // std::cout << std::format("FPS:{}", Utils::FPS());
-        TerminalControl::MoveTo(y, x);
+        Game::HandleInput();
+
+        TerminalControl::MoveTo(10, Draw::ColCast(3));
+        std::cout << std::format("FPS:{}", Utils::FPS());
+        TerminalControl::MoveTo(y, Draw::ColCast(x));
         TerminalControl::SetBackCorlor(214);
         std::cout << "  ";
         TerminalControl::ResetCorlor();
@@ -47,6 +54,9 @@ void Loop()
 
 void Exit()
 {
+    TerminalControl::CleanScreen();
+    TerminalControl::MoveTo(1, 1);
+    std::cout << "Bye!\n";
     TerminalControl::ShowCursor();
 }
 
