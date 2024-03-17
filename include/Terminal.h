@@ -5,16 +5,15 @@
 
 namespace TerminalControl
 {
+	constexpr std::string CSI = "\e[";
 
-constexpr std::string CSI = "\e[";
-
-void MoveTo(int row, int col);
-void SetForeCorlor(int id);
-void SetBackCorlor(int id);
-void ResetCorlor();
-void CleanScreen();
-void HideCursor();
-void ShowCursor();
+	void MoveCursor(int row, int col);
+	void SetForeCorlor(int id);
+	void SetBackCorlor(int id);
+	void ResetCorlor();
+	void CleanScreen();
+	void HideCursor();
+	void ShowCursor();
 } // namespace TerminalControl
 
 #endif

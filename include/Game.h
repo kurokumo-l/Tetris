@@ -4,14 +4,14 @@
 namespace Game
 {
 
-extern bool IsRunning;
+	extern bool isRunning;
 
-void Init();
-void Quit();
-void Rotate();
-void MoveDown();
-void MoveLeft();
-void MoveRight();
+	void Init();
+	void Quit();
+	void Rotate();
+	void MoveDown();
+	void MoveLeft();
+	void MoveRight();
 } // namespace Game
 
 #endif

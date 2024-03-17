@@ -1,11 +1,21 @@
 #ifndef _DRAW_H_
 #define _DRAW_H_
 
+#include "Tetromio.h"
 #include <string>
+
 namespace Draw
 {
-int ColCast(int col);
-void Window(int top, int left, int width, int height, const std::string &title);
+	struct Rect
+	{
+		int top;
+		int left;
+		int width;
+		int height;
+	};
+	int	 ColCast(int col);
+	void DrawWindow(Rect rect, const std::string& title);
+    void DrawTetromino(int top, int left, const Game::Tetromino &t);
 } // namespace Draw
 
 #endif

@@ -4,12 +4,12 @@
 namespace Game
 {
 
-constexpr int KEY_QUIT = 'Q';
-constexpr int KEY_Rotate = 'W';
-constexpr int KEY_Down = 'S';
-constexpr int KEY_Left = 'A';
-constexpr int KEY_Right = 'D';
+	constexpr int Key_Quit = 'Q';
+	constexpr int Key_Rotate = 'W';
+	constexpr int Key_Down = 'S';
+	constexpr int Key_Left = 'A';
+	constexpr int Key_Right = 'D';
 
-void HandleInput();
+	void HandleInput();
 } // namespace Game
 #endif

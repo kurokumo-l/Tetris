@@ -1,15 +1,15 @@
 #include "Game.h"
 
-bool Game::IsRunning = false;
+bool Game::isRunning = false;
 
 void Game::Init()
 {
-    IsRunning = true;
+	isRunning = true;
 }
 
 void Game::Quit()
 {
-    IsRunning = false;
+	isRunning = false;
 }
 
 void Game::Rotate()

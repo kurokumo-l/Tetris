@@ -4,24 +4,24 @@
 
 void Game::HandleInput()
 {
-    if (Utils::IsKeyDown('Q'))
-    {
-        Game::Quit();
-    }
-    if (Utils::IsKeyDown('W'))
-    {
-        Game::Rotate();
-    }
-    if (Utils::IsKeyDown('S'))
-    {
-        Game::MoveDown();
-    }
-    if (Utils::IsKeyDown('A'))
-    {
-        Game::MoveLeft();
-    }
-    if (Utils::IsKeyDown('D'))
-    {
-        Game::MoveRight();
-    }
+	if (Utils::IsKeyDown(Key_Quit))
+	{
+		Game::Quit();
+	}
+	else if (Utils::IsKeyDown(Key_Rotate))
+	{
+		Game::Rotate();
+	}
+	else if (Utils::IsKeyDown(Key_Down))
+	{
+		Game::MoveDown();
+	}
+	else if (Utils::IsKeyDown(Key_Left))
+	{
+		Game::MoveLeft();
+	}
+	else if (Utils::IsKeyDown(Key_Right))
+	{
+		Game::MoveRight();
+	}
 }
