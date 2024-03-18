@@ -15,6 +15,8 @@ namespace Draw
 	};
 	int	 ColCast(int col);
 	void DrawWindow(Rect rect, const std::string& title);
+    void DrawBlock();
+    void DrawBlock(int Color);
     void DrawTetromino(int top, int left, const Game::Tetromino &t);
 } // namespace Draw
 

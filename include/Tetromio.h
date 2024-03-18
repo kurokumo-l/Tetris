@@ -1,6 +1,7 @@
 #ifndef _TERTROMINO_H
 #define _TERTROMINO_H
 
+#include "Corlor.h"
 #include <vector>
 
 namespace Game
@@ -15,7 +16,14 @@ namespace Game
 	extern const Tetromino T;
 	extern const Tetromino Z;
 
-	Tetromino RotateTetromino(Tetromino t);
+    constexpr int ICorlor = (int)Corlor::Cyan;
+    constexpr int JCorlor = (int)Corlor::Blue;
+    constexpr int LCorlor = (int)Corlor::Orange;
+    constexpr int OCorlor = (int)Corlor::Yellow;
+    constexpr int SCorlor = (int)Corlor::Green;
+    constexpr int TCorlor = (int)Corlor::Purple;
+    constexpr int ZCorlor = (int)Corlor::Red;
+	Tetromino RotateTetromino(const Tetromino& t);
 } // namespace Game
 
 #endif

@@ -23,6 +23,10 @@ void Draw::DrawWindow(Draw::Rect rect, const std::string& title)
 	}
 	std::cout << "┐ ";
 
+	// 标题
+	TerminalControl::MoveCursor(top, ColCast((width - (int)title.length()) / 2 + left + 1));
+	std::cout << title;
+
 	// 第二行到倒数第二行
 	for (int i = 1; i < height - 1; i++)
 	{
@@ -43,19 +47,36 @@ void Draw::DrawWindow(Draw::Rect rect, const std::string& title)
 		std::cout << "──";
 	}
 	std::cout << "┘ ";
+}
 
-	// 标题
-	TerminalControl::MoveCursor(top, ColCast((width - (int)title.length()) / 2 + left + 1));
-	std::cout << title;
+void Draw::DrawBlock()
+{
+	TerminalControl::ResetCorlor();
+	std::cout << "  ";
+}
+
+void Draw::DrawBlock(int color)
+{
+	TerminalControl::SetBackCorlor(color);
+	std::cout << "  ";
+	TerminalControl::ResetCorlor();
 }
 
 void Draw::DrawTetromino(int top, int left, const Game::Tetromino& t)
 {
-	TerminalControl::MoveCursor(top, left);
 	for (int i = 0; i < t.size(); i++)
 	{
 		for (int j = 0; j < t.size(); j++)
 		{
+			TerminalControl::MoveCursor(top + i, ColCast(left + j));
+			if (t[i][j] != 0)
+			{
+				DrawBlock(t[i][j]);
+			}
+			else
+			{
+				DrawBlock();
+			}
 		}
 	}
 }

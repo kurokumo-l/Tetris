@@ -5,6 +5,8 @@
 #include "Utils.h"
 #include <format>
 #include <iostream>
+#include <ostream>
+#include <string>
 #include <thread>
 
 using namespace std::chrono_literals;
@@ -26,23 +28,16 @@ void Init()
 {
 	std::locale::global(std::locale("zh_CN.UTF-8"));
 
+	Game::Init();
+
 	TerminalControl::HideCursor();
 	TerminalControl::CleanScreen();
-
-	// 当前方块
 	Draw::DrawWindow(HoldRect, "Hold");
-	// 游戏状态面板
 	Draw::DrawWindow(StatuRect, "Statu");
-
-	// 游戏主窗口
-	Draw::DrawWindow(GameRect, "Tetris");
-
-	// 接下来的方块
+	Draw::DrawWindow(GameRect, "Tetrsds");
 	Draw::DrawWindow(NextRect, "Next");
-	// 信息面板
 	Draw::DrawWindow(InfoRect, "Info");
 
-	Game::Init();
 }
 
 void Loop()
@@ -53,15 +48,13 @@ void Loop()
 	{
 		Game::HandleInput();
 
-		TerminalControl::MoveCursor(10, Draw::ColCast(3));
+		Draw::DrawTetromino(GameRect.top + Game::currentRow, GameRect.left + Game::currentCol, Game::currentTetromino);
+
+		TerminalControl::MoveCursor(StatuRect.top + 3, Draw::ColCast(StatuRect.left + 1));
 		std::cout << std::format("FPS:{}", Utils::FPS());
-		TerminalControl::MoveCursor(y, Draw::ColCast(x));
-		TerminalControl::SetBackCorlor(214);
-		std::cout << "  ";
-		TerminalControl::ResetCorlor();
+
+		std::flush(std::cout);
 		std::this_thread::sleep_for(100ms);
-		// TerminalControl::CleanScreen();
-		// y = (y + 1) % 15;
 	}
 }
 
