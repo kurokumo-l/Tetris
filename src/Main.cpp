@@ -37,23 +37,23 @@ void Init()
 	Draw::DrawWindow(GameRect, "Tetrsds");
 	Draw::DrawWindow(NextRect, "Next");
 	Draw::DrawWindow(InfoRect, "Info");
-
 }
 
 void Loop()
 {
-	int x = 15;
-	int y = 18;
 	while (Game::isRunning)
 	{
-		Game::HandleInput();
-
-		Draw::DrawTetromino(GameRect.top + Game::currentRow, GameRect.left + Game::currentCol, Game::currentTetromino);
+		// Draw::DrawWindow(HoldRect, "Hold");
+		// Draw::DrawWindow(StatuRect, "Statu");
+		// Draw::DrawWindow(GameRect, "Tetrsds");
+		// Draw::DrawWindow(NextRect, "Next");
+		// Draw::DrawWindow(InfoRect, "Info");
+        Game::Process();
+		Draw::DrawFrame(Game::frame, GameRect.top + 1, GameRect.left + 1);
 
 		TerminalControl::MoveCursor(StatuRect.top + 3, Draw::ColCast(StatuRect.left + 1));
 		std::cout << std::format("FPS:{}", Utils::FPS());
 
-		std::flush(std::cout);
 		std::this_thread::sleep_for(100ms);
 	}
 }
@@ -61,6 +61,7 @@ void Loop()
 void Exit()
 {
 	TerminalControl::CleanScreen();
+	TerminalControl::ResetCorlor();
 	TerminalControl::MoveCursor(1, 1);
 	std::cout << "Bye!\n";
 	TerminalControl::ShowCursor();
