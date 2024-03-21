@@ -54,20 +54,6 @@ namespace Draw
 		std::cout << "┘ ";
 	}
 
-	void DrawTetromino(int top, int left, const Game::TetrominoSet& t, int index)
-	{
-		TerminalControl::MoveCursor(top, ColCast(left));
-		TerminalControl::SetBackCorlor(t[index][0].second);
-		std::cout << "  ";
-
-		for (int i = 1; i < 4; i++)
-		{
-			TerminalControl::MoveCursor(top - t[index][i].second, ColCast(left + t[index][i].first));
-			std::cout << "  ";
-		}
-
-		TerminalControl::ResetCorlor();
-	}
 
 	void DrawFrame(const Game::Board& frame, int top, int left)
 	{
