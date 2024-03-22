@@ -1,6 +1,7 @@
 #include "Utils.h"
-#include <chrono>
 #include <Windows.h>
+#include <stringapiset.h>
+#include <winnls.h>
 #include <winuser.h>
 
 namespace Utils

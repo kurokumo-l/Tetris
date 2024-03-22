@@ -2,9 +2,11 @@
 #include "Board.h"
 #include "Game.h"
 #include "Terminal.h"
+#include <climits>
 #include <iostream>
 #include <ranges>
 #include <string>
+#include <vector>
 
 namespace Draw
 {
@@ -54,32 +56,38 @@ namespace Draw
 		std::cout << "┘ ";
 	}
 
-
 	void DrawFrame(const Game::Board& frame, int top, int left)
 	{
+		static Game::Board buffer(frame.size(), std::vector<int>(frame[0].size(), INT_MIN));
+
 		for (auto x : std::ranges::views::iota(0, Game::ColNum))
 		{
 			for (auto y : std::ranges::views::iota(0, Game::RowNum - 2))
 			{
+				if (buffer[x][y] == frame[x][y])
+				{
+					continue;
+				}
+				buffer[x][y] = frame[x][y];
+
 				int row = top + Game::RowNum - 2 - y - 1;
 				int col = left + x;
 				TerminalControl::MoveCursor(row, ColCast(col));
 				if (frame[x][y] > 0)
 				{
-					TerminalControl::ResetCorlor();
 					TerminalControl::SetBackCorlor(frame[x][y]);
 					std::cout << "  ";
 				}
 				else if (frame[x][y] < 0)
 				{
-					TerminalControl::ResetCorlor();
 					TerminalControl::SetForeCorlor(-frame[x][y]);
-					std::cout << "◣";
+					std::cout << "◣◥";
 				}
-                else {
-                    TerminalControl::ResetCorlor();
-                    std::cout << " ·";
-                }
+				else
+				{
+					std::cout << " .";
+				}
+				TerminalControl::ResetCorlor();
 			}
 		}
 	}

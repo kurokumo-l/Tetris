@@ -1,4 +1,3 @@
-#include "Control.h"
 #include "Draw.h"
 #include "Game.h"
 #include "Terminal.h"
@@ -43,12 +42,7 @@ void Loop()
 {
 	while (Game::isRunning)
 	{
-		// Draw::DrawWindow(HoldRect, "Hold");
-		// Draw::DrawWindow(StatuRect, "Statu");
-		// Draw::DrawWindow(GameRect, "Tetrsds");
-		// Draw::DrawWindow(NextRect, "Next");
-		// Draw::DrawWindow(InfoRect, "Info");
-        Game::Process();
+		Game::Process();
 		Draw::DrawFrame(Game::frame, GameRect.top + 1, GameRect.left + 1);
 
 		TerminalControl::MoveCursor(StatuRect.top + 3, Draw::ColCast(StatuRect.left + 1));
