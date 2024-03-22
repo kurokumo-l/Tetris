@@ -5,15 +5,17 @@
 #include "Tetromio.h"
 #include "Utils.h"
 #include <chrono>
+#include <cstdlib>
 #include <ranges>
 #include <vector>
 
 namespace Game
 {
 	bool					  isRunning;
-	Board					  board;
+	Board					  playfield;
 	Board					  frame;
 	Piece					  onePiece;
+	bool					  isLocked;
 	std::chrono::microseconds duration;
 
 	void Init()
@@ -21,9 +23,11 @@ namespace Game
 		using namespace std::chrono;
 
 		isRunning = true;
-		board = std::vector<std::vector<int>>(ColNum, std::vector<int>(RowNum, 0));
+		// mino = playfield[y][x]
+		playfield = std::vector<std::vector<int>>(RowNum, std::vector<int>(ColNum, 0));
 		onePiece = Pick();
-		frame = board;
+		frame = playfield;
+		isLocked = false;
 		duration = 500ms;
 	}
 
@@ -32,20 +36,33 @@ namespace Game
 		HandleInput();
 		if (Utils::Timer(duration))
 		{
-			onePiece.MoveDown();
+			if (onePiece.MoveDown())
+			{
+				return;
+			}
+			if (!isLocked)
+			{
+				isLocked = true;
+				return;
+			}
+			isLocked = false;
+			Lock();
+			Clear();
+			onePiece = Pick();
 		}
-        Render();
 	}
 
 	void Render()
 	{
-		frame = board;
+		frame = playfield;
 		auto [ox, oy] = onePiece.GetPosition();
 
 		for (auto i : std::ranges::views::iota(0, 4))
 		{
 			auto [dx, dy] = onePiece.GetMino(i);
-			frame[ox + dx][oy + dy] = onePiece.GetColor();
+			int x = ox + dx;
+			int y = oy + dy;
+			frame[y][x] = onePiece.GetColor();
 		}
 		while (onePiece.Test({ ox, --oy }))
 			;
@@ -53,7 +70,50 @@ namespace Game
 		for (auto i : std::ranges::views::iota(0, 4))
 		{
 			auto [dx, dy] = onePiece.GetMino(i);
-			frame[ox + dx][oy + dy] = -onePiece.GetColor();
+			int x = ox + dx;
+			int y = oy + dy;
+			frame[y][x] = -onePiece.GetColor();
+		}
+	}
+
+	Piece Pick()
+	{
+		static std::vector<TetrominoSet> bag{ I, J, L, O, S, T, Z };
+		return { bag[rand() % 7], 0, { 4, 20 }, &playfield };
+	}
+
+	void Lock()
+	{
+		auto [ox, oy] = onePiece.GetPosition();
+
+		for (auto i : std::ranges::views::iota(0, 4))
+		{
+			auto [dx, dy] = onePiece.GetMino(i);
+			int x = ox + dx;
+			int y = oy + dy;
+			playfield[y][x] = onePiece.GetColor();
+		}
+	}
+
+	void Clear()
+	{
+		for (auto it = playfield.begin(); it != playfield.end(); it++)
+		{
+			bool isFull = true;
+			for (auto mino : *it)
+			{
+				if (mino == 0)
+				{
+					isFull = false;
+					break;
+				}
+			}
+			if (isFull)
+			{
+				it = playfield.erase(it);
+				playfield.emplace_back(it->size(), 0);
+                it--;
+			}
 		}
 	}
 
@@ -62,26 +122,26 @@ namespace Game
 		isRunning = false;
 	}
 
-	Piece Pick()
-	{
-		// TODO:  返回待选列表中的一个棋子
-		return {Game::I, 0, {4, 20}, &board};
-	}
-
 	void Rotate()
 	{
-        onePiece.Rotate();
+		onePiece.Rotate();
 	}
 	void MoveDown()
 	{
-        onePiece.MoveDown();
+		onePiece.MoveDown();
 	}
 	void MoveLeft()
 	{
-        onePiece.MoveLeft();
+		onePiece.MoveLeft();
 	}
 	void MoveRight()
 	{
-        onePiece.MoveRight();
+		onePiece.MoveRight();
+	}
+	void Drop()
+	{
+		while (onePiece.MoveDown())
+			;
+		isLocked = true;
 	}
 } // namespace Game

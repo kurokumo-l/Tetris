@@ -26,5 +26,9 @@ namespace Game
 		{
 			MoveRight();
 		}
+		else if (Utils::IsKeyDown(Key_Space))
+		{
+            Drop();
+		}
 	}
 } // namespace Game

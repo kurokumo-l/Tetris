@@ -43,12 +43,13 @@ void Loop()
 	while (Game::isRunning)
 	{
 		Game::Process();
+        Game::Render();
 		Draw::DrawFrame(Game::frame, GameRect.top + 1, GameRect.left + 1);
 
 		TerminalControl::MoveCursor(StatuRect.top + 3, Draw::ColCast(StatuRect.left + 1));
 		std::cout << std::format("FPS:{}", Utils::FPS());
 
-		std::this_thread::sleep_for(100ms);
+		std::this_thread::sleep_for(66ms);
 	}
 }
 

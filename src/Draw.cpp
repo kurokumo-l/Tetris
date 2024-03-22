@@ -64,24 +64,25 @@ namespace Draw
 		{
 			for (auto y : std::ranges::views::iota(0, Game::RowNum - 2))
 			{
-				if (buffer[x][y] == frame[x][y])
+				if (buffer[y][x] == frame[y][x])
 				{
 					continue;
 				}
-				buffer[x][y] = frame[x][y];
+				buffer[y][x] = frame[y][x];
 
 				int row = top + Game::RowNum - 2 - y - 1;
 				int col = left + x;
 				TerminalControl::MoveCursor(row, ColCast(col));
-				if (frame[x][y] > 0)
+				if (frame[y][x] > 0)
 				{
-					TerminalControl::SetBackCorlor(frame[x][y]);
+					TerminalControl::SetBackCorlor(frame[y][x]);
 					std::cout << "  ";
 				}
-				else if (frame[x][y] < 0)
+				else if (frame[y][x] < 0)
 				{
-					TerminalControl::SetForeCorlor(-frame[x][y]);
-					std::cout << "◣◥";
+					TerminalControl::SetForeCorlor(-frame[y][x]);
+					// std::cout << "◣◥";
+					std::cout << "◣ ";
 				}
 				else
 				{

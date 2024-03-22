@@ -9,7 +9,7 @@ namespace Game
 	constexpr int					 RowNum = 22;
 	constexpr int					 ColNum = 10;
 	extern bool						 isRunning;
-	extern Board					 board;
+	extern Board					 playfield;
 	extern Board					 frame;
 	extern Piece					 onePiece;
 	extern std::chrono::microseconds duration;
@@ -21,10 +21,14 @@ namespace Game
 
 	Piece Pick();
 
+	void Lock();
+	void Clear();
+
 	void Rotate();
 	void MoveDown();
 	void MoveLeft();
 	void MoveRight();
+	void Drop();
 } // namespace Game
 
 #endif

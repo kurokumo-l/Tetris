@@ -24,11 +24,11 @@ namespace Game
 			auto [dx, dy] = GetMino(i);
 			int x = ox + dx;
 			int y = oy + dy;
-			if (x < 0 || x >= m_Board->size() || y < 0 || y >= m_Board->front().size())
+			if (x < 0 || x >= m_Board->front().size() || y < 0 || y >= m_Board->size())
 			{
 				return false;
 			}
-			if ((*m_Board)[x][y] > 0)
+			if ((*m_Board)[y][x] > 0)
 			{
 				return false;
 			}
@@ -55,38 +55,38 @@ namespace Game
 		return m_TetrominoSet[0][0].second;
 	}
 
-	void Piece::Rotate()
+	bool Piece::Rotate()
 	{
 		m_Index = (m_Index + 1) % 4;
-		for (auto i : std::ranges::views::iota(0, 4))
+		if (!Test(m_Position))
 		{
-			if (!Test(m_Position))
-			{
-                m_Index = (m_Index + 3) % 4;
-				return;
-            }
-        }
+			m_Index = (m_Index + 3) % 4;
+			return false;
+		}
+		return true;
 	}
-	void Piece::MoveDown()
+	bool Piece::MoveDown()
 	{
-		MoveTo({ m_Position.first, m_Position.second - 1 });
+		return MoveTo({ m_Position.first, m_Position.second - 1 });
 	}
 
-	void Piece::MoveLeft()
+	bool Piece::MoveLeft()
 	{
-		MoveTo({ m_Position.first - 1, m_Position.second });
+		return MoveTo({ m_Position.first - 1, m_Position.second });
 	}
 
-	void Piece::MoveRight()
+	bool Piece::MoveRight()
 	{
-		MoveTo({ m_Position.first + 1, m_Position.second });
+		return MoveTo({ m_Position.first + 1, m_Position.second });
 	}
 
-	void Piece::MoveTo(std::pair<int, int> newPostion)
+	bool Piece::MoveTo(std::pair<int, int> newPostion)
 	{
 		if (Test(newPostion))
 		{
 			m_Position = newPostion;
+			return true;
 		}
+		return false;
 	}
 } // namespace Game

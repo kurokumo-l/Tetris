@@ -17,13 +17,13 @@ namespace Game
 		[[nodiscard]] int				  GetColor() const;
 		[[nodiscard]] bool				  Test(std::pair<int, int> position) const;
 
-		void Rotate();
-		void MoveDown();
-		void MoveLeft();
-		void MoveRight();
+		bool Rotate();
+		bool MoveDown();
+		bool MoveLeft();
+		bool MoveRight();
 
 	private:
-		void MoveTo(std::pair<int, int> newPostion);
+		bool MoveTo(std::pair<int, int> newPostion);
 
 		TetrominoSet		m_TetrominoSet;
 		int					m_Index;
