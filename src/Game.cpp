@@ -15,7 +15,7 @@ namespace Game
 	Board					  playfield;
 	Board					  frame;
 	Piece					  onePiece;
-	bool					  isLocked;
+	bool					  isPrepareToLock;
 	std::chrono::microseconds duration;
 
 	void Init()
@@ -27,7 +27,7 @@ namespace Game
 		playfield = std::vector<std::vector<int>>(RowNum, std::vector<int>(ColNum, 0));
 		onePiece = Pick();
 		frame = playfield;
-		isLocked = false;
+		isPrepareToLock = false;
 		duration = 500ms;
 	}
 
@@ -40,12 +40,12 @@ namespace Game
 			{
 				return;
 			}
-			if (!isLocked)
+			if (!isPrepareToLock)
 			{
-				isLocked = true;
+				isPrepareToLock = true;
 				return;
 			}
-			isLocked = false;
+			isPrepareToLock = false;
 			Lock();
 			Clear();
 			onePiece = Pick();
@@ -142,6 +142,6 @@ namespace Game
 	{
 		while (onePiece.MoveDown())
 			;
-		isLocked = true;
+		isPrepareToLock = true;
 	}
 } // namespace Game

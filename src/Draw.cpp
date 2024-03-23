@@ -81,12 +81,11 @@ namespace Draw
 				else if (frame[y][x] < 0)
 				{
 					TerminalControl::SetForeCorlor(-frame[y][x]);
-					// std::cout << "◣◥";
-					std::cout << "◣ ";
+					std::cout << "◣◥";
 				}
 				else
 				{
-					std::cout << " .";
+					std::cout << "・";
 				}
 				TerminalControl::ResetCorlor();
 			}

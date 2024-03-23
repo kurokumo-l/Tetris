@@ -7,6 +7,8 @@
 #include <ostream>
 #include <string>
 #include <thread>
+#include <Windows.h>
+#include <winnls.h>
 
 using namespace std::chrono_literals;
 
@@ -25,8 +27,7 @@ constexpr Draw::Rect InfoRect = { 19, 22, 8, 4 };
 
 void Init()
 {
-	std::locale::global(std::locale("zh_CN.UTF-8"));
-
+    SetConsoleOutputCP(CP_UTF8);
 	Game::Init();
 
 	TerminalControl::HideCursor();
