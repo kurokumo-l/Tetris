@@ -2,6 +2,8 @@
 #define _DRAW_H_
 
 #include "Board.h"
+#include "Tetromio.h"
+#include <queue>
 #include <string>
 
 namespace Draw
@@ -15,7 +17,9 @@ namespace Draw
 	};
 	int	 ColCast(int col);
 	void DrawWindow(Rect rect, const std::string& title);
-    void DrawFrame(const Game::Board &frame, int top, int left);
+	void DrawBoard(const Game::Board& board, int top, int left, const Game::Board& buffer, const std::string& blank = "  ");
+	void DrawFrame(const Game::Board& frame, int top, int left);
+    void DrawPreview(std::queue<Game::TetrominoSet> previewQuene, int top, int left);
 } // namespace Draw
 
 #endif

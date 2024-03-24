@@ -6,12 +6,8 @@
 
 namespace Game
 {
-	Piece::Piece()
-		: m_TetrominoSet(Game::I), m_Index(0), m_Position({ 0, 0 }), m_Board(nullptr)
-	{
-	}
 	Piece::Piece(TetrominoSet ts, int index, std::pair<int, int> position, Board* board)
-		: m_TetrominoSet(std::move(ts)), m_Index(index), m_Position(position), m_Board(board)
+		: m_TetrominoSet(std::move(ts)), m_Index(index), m_Position(position), m_Board(board), m_IsShadow(false)
 	{
 	}
 
@@ -52,7 +48,8 @@ namespace Game
 
 	int Piece::GetColor() const
 	{
-		return m_TetrominoSet[0][0].second;
+		int flag = m_IsShadow ? -1 : 1;
+		return flag * m_TetrominoSet[0][0].second;
 	}
 
 	bool Piece::Rotate()
@@ -88,5 +85,9 @@ namespace Game
 			return true;
 		}
 		return false;
+	}
+	void Piece::SetIsShadow(bool isShadow)
+	{
+		m_IsShadow = isShadow;
 	}
 } // namespace Game

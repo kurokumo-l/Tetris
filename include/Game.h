@@ -3,7 +3,9 @@
 
 #include "Board.h"
 #include "Piece.h"
+#include "Tetromio.h"
 #include <chrono>
+#include <queue>
 namespace Game
 {
 	constexpr int					 RowNum = 22;
@@ -12,6 +14,7 @@ namespace Game
 	extern Board					 playfield;
 	extern Board					 frame;
 	extern Piece					 onePiece;
+	extern std::queue<TetrominoSet>	 previewQuene;
 	extern std::chrono::microseconds duration;
 
 	void Init();
@@ -20,6 +23,7 @@ namespace Game
 	void Quit();
 
 	Piece Pick();
+    void GetPreview();
 
 	void Lock();
 	void Clear();
@@ -29,6 +33,8 @@ namespace Game
 	void MoveLeft();
 	void MoveRight();
 	void Drop();
+
+    void PlacePiece(Board& board, const Piece& piece);
 } // namespace Game
 
 #endif

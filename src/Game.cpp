@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include <chrono>
 #include <cstdlib>
+#include <queue>
 #include <ranges>
 #include <vector>
 
@@ -15,6 +16,7 @@ namespace Game
 	Board					  playfield;
 	Board					  frame;
 	Piece					  onePiece;
+	std::queue<TetrominoSet>  previewQuene;
 	bool					  isPrepareToLock;
 	std::chrono::microseconds duration;
 
@@ -25,6 +27,7 @@ namespace Game
 		isRunning = true;
 		// mino = playfield[y][x]
 		playfield = std::vector<std::vector<int>>(RowNum, std::vector<int>(ColNum, 0));
+		GetPreview();
 		onePiece = Pick();
 		frame = playfield;
 		isPrepareToLock = false;
@@ -55,44 +58,43 @@ namespace Game
 	void Render()
 	{
 		frame = playfield;
-		auto [ox, oy] = onePiece.GetPosition();
+		PlacePiece(frame, onePiece);
 
-		for (auto i : std::ranges::views::iota(0, 4))
-		{
-			auto [dx, dy] = onePiece.GetMino(i);
-			int x = ox + dx;
-			int y = oy + dy;
-			frame[y][x] = onePiece.GetColor();
-		}
-		while (onePiece.Test({ ox, --oy }))
+		Piece shadow = onePiece;
+		shadow.SetIsShadow(true);
+		while (shadow.MoveDown())
 			;
-		oy++;
-		for (auto i : std::ranges::views::iota(0, 4))
-		{
-			auto [dx, dy] = onePiece.GetMino(i);
-			int x = ox + dx;
-			int y = oy + dy;
-			frame[y][x] = -onePiece.GetColor();
-		}
+
+		PlacePiece(frame, shadow);
 	}
 
 	Piece Pick()
 	{
+		Piece res = { previewQuene.front(), 0, { 4, 20 }, &playfield };
+		previewQuene.pop();
+		GetPreview();
+		return res;
+	}
+
+	void GetPreview()
+	{
 		static std::vector<TetrominoSet> bag{ I, J, L, O, S, T, Z };
-		return { bag[rand() % 7], 0, { 4, 20 }, &playfield };
+		static std::vector<TetrominoSet> currentBag{ bag };
+		while (previewQuene.size() < 5)
+		{
+			int index = (int)(rand() % currentBag.size());
+			previewQuene.push(currentBag[index]);
+			currentBag.erase(currentBag.begin() + index);
+			if (currentBag.empty())
+			{
+				currentBag = bag;
+			}
+		}
 	}
 
 	void Lock()
 	{
-		auto [ox, oy] = onePiece.GetPosition();
-
-		for (auto i : std::ranges::views::iota(0, 4))
-		{
-			auto [dx, dy] = onePiece.GetMino(i);
-			int x = ox + dx;
-			int y = oy + dy;
-			playfield[y][x] = onePiece.GetColor();
-		}
+		PlacePiece(playfield, onePiece);
 	}
 
 	void Clear()
@@ -112,7 +114,7 @@ namespace Game
 			{
 				it = playfield.erase(it);
 				playfield.emplace_back(it->size(), 0);
-                it--;
+				it--;
 			}
 		}
 	}
@@ -143,5 +145,18 @@ namespace Game
 		while (onePiece.MoveDown())
 			;
 		isPrepareToLock = true;
+	}
+
+	void PlacePiece(Board& board, const Piece& piece)
+	{
+		auto [ox, oy] = piece.GetPosition();
+
+		for (auto i : std::ranges::views::iota(0, 4))
+		{
+			auto [dx, dy] = piece.GetMino(i);
+			int x = ox + dx;
+			int y = oy + dy;
+			board[y][x] = piece.GetColor();
+		}
 	}
 } // namespace Game

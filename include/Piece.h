@@ -9,7 +9,7 @@ namespace Game
 	class Piece
 	{
 	public:
-		Piece();
+		Piece() = default;
 		Piece(TetrominoSet ts, int index, std::pair<int, int> position, Board* board);
 
 		[[nodiscard]] std::pair<int, int> GetPosition() const;
@@ -21,6 +21,7 @@ namespace Game
 		bool MoveDown();
 		bool MoveLeft();
 		bool MoveRight();
+		void SetIsShadow(bool isShadow);
 
 	private:
 		bool MoveTo(std::pair<int, int> newPostion);
@@ -29,6 +30,7 @@ namespace Game
 		int					m_Index;
 		std::pair<int, int> m_Position;
 		Board*				m_Board;
+		bool				m_IsShadow;
 
 	}; // namespace Game
 } // namespace Game
