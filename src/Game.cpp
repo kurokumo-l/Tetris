@@ -156,7 +156,8 @@ namespace Game
 			auto [dx, dy] = piece.GetMino(i);
 			int x = ox + dx;
 			int y = oy + dy;
-			board[y][x] = piece.GetColor();
+			if (board[y][x] == 0)
+				board[y][x] = piece.GetColor();
 		}
 	}
 } // namespace Game

@@ -1,34 +1,60 @@
 #include "Control.h"
 #include "Game.h"
-#include "Utils.h"
 
 namespace Game
 {
+	std::unordered_map<int, std::pair<bool, bool>> keyStates{
+		{ Key_Quit, { false, false } },
+		{ Key_Rotate, { false, false } },
+		{ Key_Down, { false, false } },
+		{ Key_Left, { false, false } },
+		{ Key_Right, { false, false } },
+		{ Key_Space, { false, false } },
+	};
+
+	void UpdateKeyState()
+	{
+
+		for (auto& [key, state] : keyStates)
+		{
+			state.first = state.second;
+
+			static const int Mask = 0x8000;
+			state.second = GetKeyState(key) & Mask;
+		}
+	}
+
+	bool IsKeyDown(int vKey)
+	{
+		return !keyStates[vKey].first && keyStates[vKey].second;
+	}
+
 	void HandleInput()
 	{
-		if (Utils::IsKeyDown(Key_Quit))
+		UpdateKeyState();
+		if (IsKeyDown(Key_Quit))
 		{
 			Quit();
 		}
-		else if (Utils::IsKeyDown(Key_Rotate))
+		else if (IsKeyDown(Key_Rotate))
 		{
 			Rotate();
 		}
-		else if (Utils::IsKeyDown(Key_Down))
+		else if (IsKeyDown(Key_Down))
 		{
 			MoveDown();
 		}
-		else if (Utils::IsKeyDown(Key_Left))
+		else if (IsKeyDown(Key_Left))
 		{
 			MoveLeft();
 		}
-		else if (Utils::IsKeyDown(Key_Right))
+		else if (IsKeyDown(Key_Right))
 		{
 			MoveRight();
 		}
-		else if (Utils::IsKeyDown(Key_Space))
+		else if (IsKeyDown(Key_Space))
 		{
-            Drop();
+			Drop();
 		}
 	}
 } // namespace Game

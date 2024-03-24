@@ -1,6 +1,8 @@
 #include "Utils.h"
 #include <Windows.h>
+#include <map>
 #include <stringapiset.h>
+#include <utility>
 #include <winnls.h>
 #include <winuser.h>
 
@@ -39,13 +41,4 @@ namespace Utils
 		return false;
 	}
 
-	bool IsKeyDown(int vKey)
-	{
-		static const int Mask = 0x8000;
-		if (GetKeyState(vKey) & Mask)
-		{
-			return true;
-		}
-		return false;
-	}
 } // namespace Utils

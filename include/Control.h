@@ -3,6 +3,8 @@
 
 #include <Windows.h>
 #include <winuser.h>
+#include <unordered_map>
+
 namespace Game
 {
 
@@ -13,6 +15,10 @@ namespace Game
 	constexpr int Key_Right = 'D';
 	constexpr int Key_Space = VK_SPACE;
 
+	extern std::unordered_map<int, std::pair<bool, bool>> keyStates;
+
+	void UpdateKeyState();
+	bool IsKeyDown(int vKey);
 	void HandleInput();
 } // namespace Game
 #endif
