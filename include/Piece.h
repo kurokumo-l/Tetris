@@ -15,9 +15,11 @@ namespace Game
 		[[nodiscard]] std::pair<int, int> GetPosition() const;
 		[[nodiscard]] std::pair<int, int> GetMino(int i) const;
 		[[nodiscard]] int				  GetColor() const;
+		[[nodiscard]] int				  GetType() const;
+		[[nodiscard]] TetrominoSet		  GetTetromino() const;
 		[[nodiscard]] bool				  Test(std::pair<int, int> position) const;
 
-		bool Rotate();
+		bool Rotate(int count);
 		bool MoveDown();
 		bool MoveLeft();
 		bool MoveRight();
@@ -27,6 +29,7 @@ namespace Game
 		bool MoveTo(std::pair<int, int> newPostion);
 
 		TetrominoSet		m_TetrominoSet;
+		Offset				m_Offset;
 		int					m_Index;
 		std::pair<int, int> m_Position;
 		Board*				m_Board;

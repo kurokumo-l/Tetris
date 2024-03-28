@@ -4,11 +4,14 @@
 #include "Corlor.h"
 #include <array>
 #include <utility>
+#include <vector>
 
 namespace Game
 {
 	using TetrominoSet = std::array<std::array<std::pair<int, int>, 4>, 4>;
+	using Offset = std::vector<std::vector<std::pair<int, int>>>;
 
+	// Tetromino
 	constexpr TetrominoSet I = { {
 		{ { { 'I', Corlor::Cyan }, { -1, 0 }, { 1, 0 }, { 2, 0 } } },
 		{ { { 'I', Corlor::Cyan }, { 0, 1 }, { 0, -1 }, { 0, -2 } } },
@@ -50,6 +53,28 @@ namespace Game
 		{ { { 'Z', Corlor::Red }, { 1, 1 }, { 1, 0 }, { 0, -1 } } },
 		{ { { 'Z', Corlor::Red }, { -1, 0 }, { 0, -1 }, { 1, -1 } } },
 		{ { { 'Z', Corlor::Red }, { -1, -1 }, { -1, 0 }, { 0, 1 } } },
+	} };
+
+	// Offset
+	const Offset Offset_Normal = { {
+		{ { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } } },
+		{ { { 0, 0 }, { 1, 0 }, { 1, -1 }, { 0, 2 }, { 1, 2 } } },
+		{ { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } } },
+		{ { { 0, 0 }, { -1, 0 }, { -1, -1 }, { 0, 2 }, { -1, 2 } } },
+	} };
+
+	const Offset Offset_I = { {
+		{ { { 0, 0 }, { -1, 0 }, { 2, 0 }, { -1, 0 }, { 2, 0 } } },
+		{ { { -1, 0 }, { 0, 0 }, { 0, 0 }, { 0, 1 }, { 0, -2 } } },
+		{ { { -1, 1 }, { 1, 1 }, { -2, 1 }, { 1, 0 }, { -2, 0 } } },
+		{ { { 0, 1 }, { 0, 1 }, { 0, 1 }, { 0, -1 }, { 0, 2 } } },
+	} };
+
+	const Offset Offset_O = { {
+		{ { { 0, 0 } } },
+		{ { { 0, -1 } } },
+		{ { { -1, -1 } } },
+		{ { { -1, 0 } } },
 	} };
 
 } // namespace Game

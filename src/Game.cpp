@@ -1,11 +1,15 @@
 #include "Game.h"
 #include "Board.h"
 #include "Control.h"
+#include "Corlor.h"
 #include "Piece.h"
 #include "Tetromio.h"
 #include "Utils.h"
+#include <cassert>
 #include <chrono>
+#include <cmath>
 #include <cstdlib>
+#include <fstream>
 #include <queue>
 #include <ranges>
 #include <vector>
@@ -16,26 +20,46 @@ namespace Game
 	Board					  playfield;
 	Board					  frame;
 	Piece					  onePiece;
+	std::queue<TetrominoSet>  holdQuene;
 	std::queue<TetrominoSet>  previewQuene;
+	bool					  isEnd;
+	bool					  isHolding;
 	bool					  isPrepareToLock;
 	std::chrono::microseconds duration;
+	int						  score;
+	int						  level;
+	int						  lines;
 
 	void Init()
 	{
 		using namespace std::chrono;
 
 		isRunning = true;
+        isEnd =false;
+
 		// mino = playfield[y][x]
 		playfield = std::vector<std::vector<int>>(RowNum, std::vector<int>(ColNum, 0));
+		// std::fstream map {"resource/map.txt"};
+		// LoadMap(map);
+
 		GetPreview();
 		onePiece = Pick();
+
 		frame = playfield;
+
 		isPrepareToLock = false;
-		duration = 500ms;
+
+		score = 0;
+		lines = 1;
+		LevelUp();
 	}
 
 	void Process()
 	{
+		if (isEnd)
+		{
+			return;
+        }
 		HandleInput();
 		if (Utils::Timer(duration))
 		{
@@ -49,9 +73,15 @@ namespace Game
 				return;
 			}
 			isPrepareToLock = false;
+			isHolding = false;
 			Lock();
 			Clear();
+			LevelUp();
 			onePiece = Pick();
+			if (!onePiece.Test({4, 20}))
+			{
+                isEnd = true;
+            }
 		}
 	}
 
@@ -92,6 +122,27 @@ namespace Game
 		}
 	}
 
+	void HoldPiece()
+	{
+		if (isHolding)
+		{
+			return;
+		}
+		if (holdQuene.empty())
+		{
+			holdQuene.push(onePiece.GetTetromino());
+			onePiece = Pick();
+		}
+		else
+		{
+			TetrominoSet temp = holdQuene.front();
+			holdQuene.pop();
+			holdQuene.push(onePiece.GetTetromino());
+			onePiece = { temp, 0, { 4, 20 }, &playfield };
+		}
+		isHolding = true;
+	}
+
 	void Lock()
 	{
 		PlacePiece(playfield, onePiece);
@@ -99,6 +150,7 @@ namespace Game
 
 	void Clear()
 	{
+		int count = 0;
 		for (auto it = playfield.begin(); it != playfield.end(); it++)
 		{
 			bool isFull = true;
@@ -115,8 +167,11 @@ namespace Game
 				it = playfield.erase(it);
 				playfield.emplace_back(it->size(), 0);
 				it--;
+				count++;
 			}
 		}
+		lines += count;
+		score += (int)pow(2, count - 1) * 100 * level;
 	}
 
 	void Quit()
@@ -124,13 +179,47 @@ namespace Game
 		isRunning = false;
 	}
 
-	void Rotate()
+	void LevelUp()
 	{
-		onePiece.Rotate();
+		level = lines / 10 + 1;
+		duration = std::chrono::milliseconds((int)pow((0.8) - (level - 1) * 0.007, level - 1) * 1000);
 	}
+
+	void LoadMap(std::fstream& file)
+	{
+		for (auto& row : playfield | std::ranges::views::take(20) | std::ranges::views::reverse)
+		{
+			for (auto i : std::ranges::views::iota(0, 10))
+			{
+				char mino = 0;
+				file >> mino;
+				if (mino == '1')
+				{
+					row[i] = Corlor::Gray;
+				}
+			}
+		}
+	}
+
+	void RotateL()
+	{
+		onePiece.Rotate(3);
+	}
+	void RotateR()
+	{
+		onePiece.Rotate(1);
+	}
+	void RotateRD()
+	{
+		onePiece.Rotate(2);
+	}
+
 	void MoveDown()
 	{
-		onePiece.MoveDown();
+		if (onePiece.MoveDown())
+		{
+			score += 1;
+		}
 	}
 	void MoveLeft()
 	{
@@ -144,6 +233,7 @@ namespace Game
 	{
 		while (onePiece.MoveDown())
 			;
+		score += 2;
 		isPrepareToLock = true;
 	}
 

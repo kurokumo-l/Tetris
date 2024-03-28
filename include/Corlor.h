@@ -11,6 +11,7 @@ namespace Corlor
 	constexpr int Blue = 12;
 	constexpr int Purple = 5;
 
+    constexpr int Gray = 7;
 	constexpr int White = 15;
 }; // namespace Corlor
 

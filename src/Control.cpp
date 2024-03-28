@@ -5,7 +5,10 @@ namespace Game
 {
 	std::unordered_map<int, std::pair<bool, bool>> keyStates{
 		{ Key_Quit, { false, false } },
-		{ Key_Rotate, { false, false } },
+		{ Key_Rotate_L, { false, false } },
+		{ Key_Rotate_R, { false, false } },
+		{ Key_Rotate_RD, { false, false } },
+		{ Key_Hold, { false, false } },
 		{ Key_Down, { false, false } },
 		{ Key_Left, { false, false } },
 		{ Key_Right, { false, false } },
@@ -36,9 +39,21 @@ namespace Game
 		{
 			Quit();
 		}
-		else if (IsKeyDown(Key_Rotate))
+		else if (IsKeyDown(Key_Rotate_L))
 		{
-			Rotate();
+			RotateL();
+		}
+		else if (IsKeyDown(Key_Rotate_R))
+		{
+			RotateR();
+		}
+		else if (IsKeyDown(Key_Rotate_RD))
+		{
+			RotateRD();
+		}
+		else if (IsKeyDown(Key_Hold))
+		{
+			HoldPiece();
 		}
 		else if (IsKeyDown(Key_Down))
 		{

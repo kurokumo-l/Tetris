@@ -100,10 +100,22 @@ namespace Draw
 
 		DrawBoard(tempFrame, top, left, &buffer, "\u30fb");
 	}
+	void DrawHold(std::queue<Game::TetrominoSet> holdQuene, int top, int left)
+	{
+		Game::Board		   hold{ 4, std::vector<int>(7, 0) };
+		static Game::Board buffer(hold.size(), std::vector<int>(hold.front().size(), INT_MIN));
+
+		if (!holdQuene.empty())
+		{
+			Game::Piece p = { holdQuene.front(), 0, { 3, 1 }, &hold };
+			Game::PlacePiece(hold, p);
+		}
+		DrawBoard(hold, top, left, &buffer);
+	}
 
 	void DrawPreview(std::queue<Game::TetrominoSet> previewQuene, int top, int left)
 	{
-		Game::Board preview{ 15, std::vector<int>(6, 0) };
+		Game::Board		   preview{ 15, std::vector<int>(6, 0) };
 		static Game::Board buffer(preview.size(), std::vector<int>(preview.front().size(), INT_MIN));
 
 		for (int y = 12; !previewQuene.empty(); y -= 3)

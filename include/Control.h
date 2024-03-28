@@ -8,8 +8,11 @@
 namespace Game
 {
 
-	constexpr int Key_Quit = 'Q';
-	constexpr int Key_Rotate = 'W';
+	constexpr int Key_Quit = VK_ESCAPE;
+	constexpr int Key_Rotate_L = 'Q';
+	constexpr int Key_Rotate_R = 'E';
+	constexpr int Key_Rotate_RD = 'W';
+    constexpr int Key_Hold = 'R';
 	constexpr int Key_Down = 'S';
 	constexpr int Key_Left = 'A';
 	constexpr int Key_Right = 'D';
